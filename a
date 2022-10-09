@@ -1,0 +1,40 @@
+/* 1) Drinkers who like the most beers (highest number of beers)
+select drinker, count(*) as numberOfDrinksLiked from Likes 
+group by drinker
+order by numberOfDrinksLiked desc
+limit 1
+*/
+
+/* 2) Bars which sell most expensive Budweiser  and are not frequented by Gunjan
+select Sells.bar 
+from Sells inner join Frequents on Sells.bar = Frequents.bar 
+where drinker != "Gunjan" and beer = "Budweiser"
+order by price desc 
+limit 1
+ */
+
+/* 3) Drinkers who frequent only bars which serve all beers they like 
+
+*/
+
+
+/* 4) Drinkers who frequent most popular bar (the one with highest count of drinkers)
+select distinct drinker 
+from Frequents inner join (select bar, count(bar) as num from (select distinct * from Frequents)f group by bar order by num desc limit 1)a on Frequents.bar = a.bar
+*/
+
+
+/* 5) Precinct(s) which collected the least number of  total votes by end of day of November 5th 2020
+Select precinct 
+from Penna where Timestamp = (select max(Timestamp) from (Select * from Penna where Timestamp like '2020-11-05%')a) 
+order by totalvotes asc 
+limit 1
+*/
+
+
+/* 6) Which precincts did Trump win by more than 100 votes in 2020
+select precinct from Penna where Timestamp = (select max(Timestamp) from Penna) and (Trump-Biden > 100)
+*/
+
+/* 7) Has Trump ever led the total vote (for any of the timestamps)?  (Return "Yes he did on <timestamp>" or "No he never did".
+*/
