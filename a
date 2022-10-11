@@ -15,8 +15,10 @@ limit 1
 
 /* 3) Drinkers who frequent only bars which serve all beers they like 
 
+(select drinker from Frequents f inner join Sells s on f.bar = s.bar)
+select * from Frequents where drinker = "John"
 */
-
+/*select distinct * from Frequents f, Likes l, Sells s where f.bar = s.bar and l.drinker = f.drinker and s.beer = l.beer*/
 
 /* 4) Drinkers who frequent most popular bar (the one with highest count of drinkers)
 select distinct drinker 
@@ -37,4 +39,13 @@ select precinct from Penna where Timestamp = (select max(Timestamp) from Penna) 
 */
 
 /* 7) Has Trump ever led the total vote (for any of the timestamps)?  (Return "Yes he did on <timestamp>" or "No he never did".
+
+select Concat(precinct ,' sells ', Beer, ' at ','$', price) as InEnglish from Sells
+(select distinct Timestamp from Penna)
 */
+
+select *, if(((select sum(Trump) as TrumpVotes from Penna where Timestamp = (select Max(Timestamp) from Penna))
+ > (select sum(Biden) as BidenVotes from Penna where Timestamp = (select Max(Timestamp) from Penna))),
+    (select Concat("yes")), (select Concat("no"))) as result from Penna
+
+
